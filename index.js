@@ -29,7 +29,7 @@ const generateComponentTemplate = ({
 {#if display}
   ${generateSvgTemplate(pathData, width, height, size)}
 {:else if occupy}
-  <div style="height: {${size}}em; width: {${size}}em;" />
+  <div style="height: {${size}}em; width: {${size}}em;"></div>
 {/if}`;
 
 function generateComponent(pathData, height, width, componentName, isTypescript) {
