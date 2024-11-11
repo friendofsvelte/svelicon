@@ -1,0 +1,16 @@
+{
+  "name": "svelicon",
+  "version": "1.0.0",
+  "description": "Downloads Iconify icons, raw SVG and converts them to Svelte components",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "iconify-svelte": "./cli.js"
+  },
+  "dependencies": {
+    "@iconify/utils": "^2.1.5",
+    "axios": "^1.6.2",
+    "commander": "^11.1.0",
+    "mkdirp": "^3.0.1"
+  }
+}
