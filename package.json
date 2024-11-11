@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "iconify-svelte": "./cli.js"
+    "svelicon": "./cli.js"
   },
   "dependencies": {
     "@iconify/utils": "^2.1.5",
