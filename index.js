@@ -4,7 +4,13 @@ import path from 'path';
 import {mkdirp} from 'mkdirp';
 import {parseSVGContent, convertParsedSVG, iconToSVG} from '@iconify/utils';
 
-const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);
+const capitalizeFirstLetter = (string) => {
+    // Split the string by ':' and '-' to handle both separator types
+    return string
+        .split(/[:,-]/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+};
 
 // Common template parts
 const generateSvgTemplate = (pathData, width, height, size) => `<svg
