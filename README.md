@@ -87,7 +87,7 @@ interface IconProps {
 Generated components include:
 
 ```svelte
-<script lang="ts" context="module">
+<script lang="ts" module>
   export interface MdiAccountProps {
     display?: boolean;
     occupy?: boolean;

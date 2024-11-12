@@ -33,7 +33,7 @@ const generateComponentTemplate = ({
 {/if}`;
 
 function generateComponent(pathData, height, width, componentName, isTypescript) {
-    const scriptContent = isTypescript ? `<script lang="ts" context="module">
+    const scriptContent = isTypescript ? `<script lang="ts" module>
   export interface ${componentName}Props {
     display?: boolean;
     occupy?: boolean;
