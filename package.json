@@ -1,6 +1,6 @@
 {
   "name": "svelicon",
-  "version": "1.0.2np",
+  "version": "1.0.2mx",
   "description": "Downloads Iconify icons, raw SVG and converts them to Svelte components",
   "main": "index.js",
   "type": "module",
