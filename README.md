@@ -114,6 +114,8 @@ Generated components include:
 - **Small Bundle Size**: Minimal impact on your app's size
 - **Flexible**: Use any Iconify icon in your Svelte project
 
+https://youtu.be/6cpXq1MHg-A
+
 ## Contributing 🤝
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
