@@ -13,6 +13,10 @@ Convert Iconify SVG icons to type-safe Svelte components with one command.
 
 > Instantly downloads Iconify SVG icons, and converts to Svelte components with full TypeScript support.
 
+## Requirements 🗒️
+
+- Svelte 5
+
 ## Usage 🚀
 
 ### Basic Usage
