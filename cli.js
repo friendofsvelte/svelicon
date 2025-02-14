@@ -6,7 +6,6 @@ program
     .name('iconify-svelte')
     .description('Download Iconify icons as Svelte components')
     .argument('<collection>', 'icon collection (e.g., mdi)')
-    .argument('<icon>', 'icon name (e.g., account)')
     .option('-o, --output <dir>', 'output directory', 'src/icons')
     .option('--withts', 'generate TypeScript version', false)
     .option('--withjs', 'generate JavaScript version', true)
