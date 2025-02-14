@@ -75,7 +75,7 @@ export async function downloadIcon(collection, options = {}) {
     try {
         // Replace spaces with slashes in the name
         // Fetch and validate icon
-        const response = await axios.get(`https://api.iconify.design/${collection}/${formattedName}.svg`);
+        const response = await axios.get(`https://api.iconify.design/${collection}.svg`);
         if (response.status !== 200) {
             console.log(`Failed to download icon ${collection}`);
             return [];
