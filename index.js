@@ -73,8 +73,11 @@ export async function downloadIcon(collection, name, options = {}) {
     } = options;
 
     try {
+        // Replace spaces with slashes in the name
+        const formattedName = name.replace(/ /g, '/');
+
         // Fetch and validate icon
-        const response = await axios.get(`https://api.iconify.design/${collection}/${name}.svg`);
+        const response = await axios.get(`https://api.iconify.design/${collection}/${formattedName}.svg`);
         if (response.status !== 200) {
             console.log(`Failed to download icon ${collection}:${name}`);
             return [];
@@ -88,7 +91,7 @@ export async function downloadIcon(collection, name, options = {}) {
 
         // Prepare output
         await mkdirp(outputDir);
-        const componentName = `${capitalizeFirstLetter(collection)}${capitalizeFirstLetter(name)}`;
+        const componentName = `${capitalizeFirstLetter(collection)}${capitalizeFirstLetter(name.replace(/ /g, '-'))}`;
 
         // Generate component content based on type
         const content = generateComponent(renderData.body, iconData.height, iconData.width, componentName, withTs);
