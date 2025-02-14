@@ -1,44 +1,40 @@
-# Svelte Icon - svelicon 🎨
+# Svelte Icon Library - Svelicon 🎨
 
-Convert Iconify SVG icons to type-safe Svelte components with one command.
+Create Svelte components from Iconify SVG icons with type-safe support. A simple CLI tool for generating Svelte icons.
 
 ## Features ✨
 
-- 🎯 **Direct Iconify Integration**: Download any icon from Iconify's massive collection
-- ⚡ **Lightning Fast**: Instant conversion from SVG to Svelte component
-- 📦 **TypeScript Support**: Generate fully typed components with interfaces
-- 🎨 **Customizable**: Control icon size, display, and space occupation
-- 🛠️ **CLI Tool**: Simple command-line interface for easy integration
-- 🔄 **Flexible Output**: Generate JavaScript or TypeScript components
+- 🎯 **Iconify Integration**: Access and download icons from the Iconify collection.
+- ⚡ **Fast Conversion**: Quickly convert SVG icons to Svelte components.
+- 📦 **TypeScript Support**: Generate fully typed components with interfaces for Svelte TypeScript projects.
+- 🎨 **Customizable Icons**: Control icon size, display behavior, and spacing.
+- 🛠️ **CLI Tool**: Easy-to-use command-line interface for Svelte icon generation.
+- 🔄 **Flexible Output**: Generate JavaScript or TypeScript Svelte components.
 
-> Instantly downloads Iconify SVG icons, and converts to Svelte components with full TypeScript support.
+> Svelicon streamlines the process of using Iconify icons in your Svelte projects, offering TypeScript support and flexible customization.
 
 ## Requirements 🗒️
 
 - Svelte 5
+- Awesomeness
 
 ## Usage 🚀
 
 ### Basic Usage
 
 ```bash
-npx svelicon mdi account
+npx svelicon --withts fluent/person-passkey-28-filled
 ```
 
-This creates a Svelte component at `src/icons/MdiAccount.svelte`.
-
-### TypeScript Component
-
-```bash
-npx svelicon mdi account --withts
+This command downloads the `person-passkey-28-filled` icon from the `fluent` collection and creates a TypeScript Svelte component at 
 ```
-
-Generates a TypeScript-enabled component with proper type definitions.
+src/icons/FluentPersonPasskey28Filled.svelte
+```
 
 ### CLI Options
 
 ```bash
-npx svelicon [collection] [icon] [options]
+npx svelicon [options] [collection]/[icon]
 
 Options:
   -o, --output <dir>  Output directory (default: "src/icons")
@@ -56,6 +52,7 @@ interface IconProps {
   display?: boolean;  // Whether to display the icon
   occupy?: boolean;   // Whether to occupy space when hidden
   size?: number;      // Icon size in em units
+  class?: string;     // Add custom CSS classes to the SVG element
 }
 ```
 
@@ -65,25 +62,26 @@ interface IconProps {
 
 ```svelte
 <script>
-  import MdiAccount from './icons/MdiAccount.svelte';
+  import FluentPersonPasskey28Filled from './icons/FluentPersonPasskey28Filled.svelte';
 </script>
 
-<MdiAccount display={true} size={1.2} />
+<FluentPersonPasskey28Filled display={true} size={1.2} />
 ```
 
 ### TypeScript Usage
 
 ```svelte
 <script lang="ts">
-  import MdiAccount, { type MdiAccountProps } from './icons/MdiAccount.svelte';
+  import FluentPersonPasskey28Filled, { type FluentPersonPasskey28FilledProps } from './icons/FluentPersonPasskey28Filled.svelte';
   
-  let iconProps: MdiAccountProps = {
+  let iconProps: FluentPersonPasskey28FilledProps = {
     display: true,
-    size: 1.2
+    size: 1.2,
+    class: 'my-custom-icon'
   };
 </script>
 
-<MdiAccount {...iconProps} />
+<FluentPersonPasskey28Filled {...iconProps} />
 ```
 
 ## Component Output Structure 🏗️
@@ -92,19 +90,20 @@ Generated components include:
 
 ```svelte
 <script lang="ts" module>
-  export interface MdiAccountProps {
+  export interface FluentPersonPasskey28FilledProps {
     display?: boolean;
     occupy?: boolean;
     size?: number;
+    class?: string;
   }
 </script>
 
 <script lang="ts">
-  const { display = false, occupy = true, size = 0.7 }: MdiAccountProps = $props();
+  const { display = false, occupy = true, size = 0.7, class: className = '' }: FluentPersonPasskey28FilledProps = $props();
 </script>
 
 {#if display}
-  <svg><!-- icon content --></svg>
+  <svg class={className}><!-- icon content --></svg>
 {:else if occupy}
   <div style="height: {size}em; width: {size}em;" />
 {/if}
@@ -112,17 +111,17 @@ Generated components include:
 
 ## Benefits 🌟
 
-- **Zero Runtime Dependencies**: Components are standalone
-- **Tree-Shakeable**: Only import what you need
-- **Type-Safe**: Full TypeScript support
-- **Small Bundle Size**: Minimal impact on your app's size
-- **Flexible**: Use any Iconify icon in your Svelte project
+- **Zero Runtime Dependencies**: Svelte icon components are standalone.
+- **Tree-Shakeable**: Only import the Svelte icons you use.
+- **Type-Safe Svelte**: Full TypeScript support for Svelte projects.
+- **Small Bundle Size**: Minimal impact on your Svelte app's size.
+- **Flexible Svelte Icons**: Use any Iconify icon in your Svelte project.
 
 https://youtu.be/6cpXq1MHg-A
 
 ## Contributing 🤝
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+Contributions are welcome! Please read our Contributing Guide for details.
 
 ## License 📄
 
@@ -130,7 +129,7 @@ MIT © [Friend of Svelte](https://github.com/friendofsvelte)
 
 ## Support 💖
 
-If you find this package helpful, please consider:
+If you find this Svelte icon library helpful, please consider:
 
 - ⭐ Starring the GitHub repo
 - 🐛 Creating issues for bugs and feature requests

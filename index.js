@@ -67,7 +67,7 @@ async function processIconData(svgContent) {
     return iconData;
 }
 
-export async function downloadIcon(collection, options = {}) {
+export async function downloadIcon(icon, options = {}) {
     const {
         outputDir = 'src/icons', withTs = false, withJs = true
     } = options;
@@ -75,9 +75,9 @@ export async function downloadIcon(collection, options = {}) {
     try {
         // Replace spaces with slashes in the name
         // Fetch and validate icon
-        const response = await axios.get(`https://api.iconify.design/${collection}.svg`);
+        const response = await axios.get(`https://api.iconify.design/${icon}.svg`);
         if (response.status !== 200) {
-            console.log(`Failed to download icon ${collection}`);
+            console.log(`Failed to download icon ${icon}`);
             return [];
         }
 
@@ -89,7 +89,13 @@ export async function downloadIcon(collection, options = {}) {
 
         // Prepare output
         await mkdirp(outputDir);
-        const componentName = `${capitalizeFirstLetter(collection)}${capitalizeFirstLetter(name.replace(/ /g, '-'))}`;
+        const names = icon.split('/');
+        const collectionName = names[0];
+        const iconName = names[1];
+        if (!iconName) {
+            throw new Error('Invalid icon name');
+        }
+        const componentName = `${capitalizeFirstLetter(collectionName)}${capitalizeFirstLetter(iconName.replace(/ /g, '-'))}`;
 
         // Generate component content based on type
         const content = generateComponent(renderData.body, iconData.height, iconData.width, componentName, withTs);
@@ -100,7 +106,7 @@ export async function downloadIcon(collection, options = {}) {
 
         return [outputPath];
     } catch (error) {
-        console.error(`Failed to download icon ${collection}:\n ${error.message}`);
+        console.error(`Failed to download icon ${icon}:\n ${error.message}`);
         return [];
     }
 }

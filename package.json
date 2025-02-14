@@ -1,7 +1,7 @@
 {
   "name": "svelicon",
-  "version": "1.0.2-dev",
-  "description": "Downloads Iconify icons, raw SVG and converts them to Svelte components",
+  "version": "1.0.3-dev",
+  "description": "✨ Svelte Icon Library - Iconify icons, raw SVG and converts them to Svelte components",
   "main": "index.js",
   "type": "module",
   "bin": {

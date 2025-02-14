@@ -5,13 +5,13 @@ import {downloadIcon} from './index.js';
 program
     .name('iconify-svelte')
     .description('Download Iconify icons as Svelte components')
-    .argument('<collection>', 'icon collection (e.g., mdi)')
+    .argument('<icon>', 'icon collection (e.g., mdi)')
     .option('-o, --output <dir>', 'output directory', 'src/icons')
     .option('--withts', 'generate TypeScript version', false)
     .option('--withjs', 'generate JavaScript version', true)
-    .action(async (collection, icon, options) => {
+    .action(async (icon, options) => {
         try {
-            const results = await downloadIcon(collection, icon, {
+            const results = await downloadIcon(icon, {
                 outputDir: options.output, withTs: options.withts, withJs: options.withjs
             });
 
