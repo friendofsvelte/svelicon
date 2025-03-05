@@ -3,9 +3,14 @@
   "version": "1.0.5",
   "description": "✨ Svelte Icon Library - Iconify icons, raw SVG and converts them to Svelte components",
   "keywords": [
-    "svelte", "svelte5",
-    "svelte icon", "icons", "svg",
-    "iconify", "font awesome", "fluent"
+    "svelte",
+    "svelte5",
+    "svelte icon",
+    "icons",
+    "svg",
+    "iconify",
+    "font awesome",
+    "fluent"
   ],
   "repository": {
     "type": "git",
@@ -19,7 +24,7 @@
   "dependencies": {
     "@iconify/utils": "^2.1.5",
     "axios": "^1.6.2",
-    "commander": "^11.1.0",
+    "commander": "^13.1.0",
     "mkdirp": "^3.0.1"
   }
 }

@@ -2,11 +2,14 @@
 import {program} from 'commander';
 import {downloadIcon} from './index.js';
 
+const iconPathFromEnvironmentVariable = process.env['SVELICON_ICON_PATH'];
+const iconPath = iconPathFromEnvironmentVariable || "src/icons";
+
 program
     .name('iconify-svelte')
     .description('Download Iconify icons as Svelte components')
     .argument('<icon>', 'icon collection (e.g., mdi)')
-    .option('-o, --output <dir>', 'output directory', 'src/icons')
+    .option('-o, --output <dir>', 'output directory', iconPath)
     .option('--withts', 'generate TypeScript version', true)
     .option('--withjs', 'generate JavaScript version', false)
     .action(async (icon, options) => {

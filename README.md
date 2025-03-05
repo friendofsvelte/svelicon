@@ -10,6 +10,7 @@ Create Svelte components from Iconify SVG icons with type-safe support. A simple
 - 🎨 **Customizable Icons**: Control icon size, display behavior, and spacing.
 - 🛠️ **CLI Tool**: Easy-to-use command-line interface for Svelte icon generation.
 - 🔄 **Flexible Output**: Generate JavaScript or TypeScript Svelte components.
+- 📂 **Configurable Output Directory**: The Svelte component output folder can be configured with `SVELICON_ICON_PATH`.
 
 > Svelicon streamlines the process of using Iconify icons in your Svelte projects, offering TypeScript support and flexible customization.
 
@@ -37,7 +38,7 @@ src/icons/FluentPersonPasskey28Filled.svelte
 npx svelicon [options] [collection]/[icon]
 
 Options:
-  -o, --output <dir>  Output directory (default: "src/icons")
+  -o, --output <dir>  Output directory (default: environment variable SVELICON_ICON_PATH or "src/icons")
   --withts            Generate TypeScript version (default: true)
   --withjs            Generate JavaScript version
   -h, --help         Display help for command
@@ -46,6 +47,15 @@ Options:
 **Example**:
 ```bash
 npx svelicon --withjs fluent/person-passkey-28-filled
+```
+
+### Output Directory Configuration
+
+To set a custom output directory for your Svelte components, set the `SVELICON_ICON_PATH` environment variable to your desired path.
+
+**Linux (Bash/Zsh):**
+```bash
+export SVELICON_ICON_PATH = "src/components/icons"
 ```
 
 ## Component Props 🎛️
