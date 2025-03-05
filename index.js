@@ -30,7 +30,7 @@ ${generateSvgTemplate(pathData, width, height, size)}`;
 
 function generateComponent(pathData, height, width, componentName, isTypescript) {
     const scriptContent = isTypescript ? `<script lang="ts" module>
-  export interface ${componentName}Props {
+  export type ${componentName}Props = {
     size?: number;
     class?: string;
   }
