@@ -26,26 +26,20 @@ const generateComponentTemplate = ({
                                        scriptContent, size = 'size', pathData, width, height
                                    }) => `${scriptContent}
 
-{#if display}
-  ${generateSvgTemplate(pathData, width, height, size)}
-{:else if occupy}
-  <div style="height: {${size}}em; width: {${size}}em;"></div>
-{/if}`;
+${generateSvgTemplate(pathData, width, height, size)}`;
 
 function generateComponent(pathData, height, width, componentName, isTypescript) {
     const scriptContent = isTypescript ? `<script lang="ts" module>
   export interface ${componentName}Props {
-    display?: boolean;
-    occupy?: boolean;
     size?: number;
     class?: string;
   }
 </script>
 
 <script lang="ts">
-  const {display = false, occupy = true, size = 0.7, class: className = ''}: ${componentName}Props = $props();
+  const { size = 0.7, class: className = '' }: ${componentName}Props = $props();
 </script>` : `<script>
-  const {display = false, occupy = true, size = 0.7, class: className = '' } = $props();
+  const { size = 0.7, class: className = '' } = $props();
 </script>`;
 
     return generateComponentTemplate({
