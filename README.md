@@ -6,7 +6,7 @@ Create Svelte components from Iconify SVG icons with type-safe support. A simple
 
 - 🎯 **Iconify Integration**: Access and download icons from the Iconify collection.
 - ⚡ **Fast Conversion**: Quickly convert SVG icons to Svelte components.
-- 📦 **TypeScript Support**: Generate fully typed components with interfaces for Svelte TypeScript projects.
+- 📦 **TypeScript Support**: Generate fully typed components with types for Svelte TypeScript projects.
 - 🎨 **Customizable Icons**: Control icon size, display behavior, and spacing.
 - 🛠️ **CLI Tool**: Easy-to-use command-line interface for Svelte icon generation.
 - 🔄 **Flexible Output**: Generate JavaScript or TypeScript Svelte components.
@@ -53,7 +53,7 @@ npx svelicon --withjs fluent/person-passkey-28-filled
 All generated components accept these props:
 
 ```typescript
-interface IconProps {
+type IconProps = {
   size?: number;      // Icon size in em units
   class?: string;     // Add custom CSS classes to the SVG element
 }
@@ -92,7 +92,7 @@ Generated components include:
 
 ```svelte
 <script lang="ts" module>
-  export interface FluentPersonPasskey28FilledProps {
+  export type FluentPersonPasskey28FilledProps = {
     size?: number;
     class?: string;
   }

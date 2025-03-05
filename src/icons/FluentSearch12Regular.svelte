@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  export interface FluentSearch12RegularProps {
+  export type FluentSearch12RegularProps = {
     size?: number;
     class?: string;
   }
