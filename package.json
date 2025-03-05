@@ -1,7 +1,16 @@
 {
   "name": "svelicon",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "✨ Svelte Icon Library - Iconify icons, raw SVG and converts them to Svelte components",
+  "keywords": [
+    "svelte", "svelte5",
+    "svelte icon", "icons", "svg",
+    "iconify", "font awesome", "fluent"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/friendofsvelte/svelicon"
+  },
   "main": "index.js",
   "type": "module",
   "bin": {

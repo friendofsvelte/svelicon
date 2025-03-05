@@ -23,7 +23,7 @@ Create Svelte components from Iconify SVG icons with type-safe support. A simple
 ### Basic Usage
 
 ```bash
-npx svelicon --withts fluent/person-passkey-28-filled
+npx svelicon fluent/person-passkey-28-filled
 ```
 
 This command downloads the `person-passkey-28-filled` icon from the `fluent` collection and creates a TypeScript Svelte component at 
@@ -38,9 +38,14 @@ npx svelicon [options] [collection]/[icon]
 
 Options:
   -o, --output <dir>  Output directory (default: "src/icons")
-  --withts            Generate TypeScript version
-  --withjs            Generate JavaScript version (default: true)
+  --withts            Generate TypeScript version (default: true)
+  --withjs            Generate JavaScript version
   -h, --help         Display help for command
+```
+
+**Example**:
+```bash
+npx svelicon --withjs fluent/person-passkey-28-filled
 ```
 
 ## Component Props 🎛️
@@ -49,8 +54,6 @@ All generated components accept these props:
 
 ```typescript
 interface IconProps {
-  display?: boolean;  // Whether to display the icon
-  occupy?: boolean;   // Whether to occupy space when hidden
   size?: number;      // Icon size in em units
   class?: string;     // Add custom CSS classes to the SVG element
 }
@@ -65,7 +68,7 @@ interface IconProps {
   import FluentPersonPasskey28Filled from './icons/FluentPersonPasskey28Filled.svelte';
 </script>
 
-<FluentPersonPasskey28Filled display={true} size={1.2} />
+<FluentPersonPasskey28Filled size={1.2} />
 ```
 
 ### TypeScript Usage
@@ -75,7 +78,6 @@ interface IconProps {
   import FluentPersonPasskey28Filled, { type FluentPersonPasskey28FilledProps } from './icons/FluentPersonPasskey28Filled.svelte';
   
   let iconProps: FluentPersonPasskey28FilledProps = {
-    display: true,
     size: 1.2,
     class: 'my-custom-icon'
   };
@@ -91,22 +93,16 @@ Generated components include:
 ```svelte
 <script lang="ts" module>
   export interface FluentPersonPasskey28FilledProps {
-    display?: boolean;
-    occupy?: boolean;
     size?: number;
     class?: string;
   }
 </script>
 
 <script lang="ts">
-  const { display = false, occupy = true, size = 0.7, class: className = '' }: FluentPersonPasskey28FilledProps = $props();
+  const { size = 0.7, class: className = '' }: FluentPersonPasskey28FilledProps = $props();
 </script>
 
-{#if display}
-  <svg class={className}><!-- icon content --></svg>
-{:else if occupy}
-  <div style="height: {size}em; width: {size}em;" />
-{/if}
+<svg class={className}><!-- icon content --></svg>
 ```
 
 ## Benefits 🌟
