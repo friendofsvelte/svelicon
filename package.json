@@ -1,25 +1,38 @@
 {
   "name": "svelicon",
-  "version": "1.0.5",
-  "description": "✨ Svelte Icon Library - Iconify icons, raw SVG and converts them to Svelte components",
+  "version": "2.0.0-beta.1",
+  "description": "✨ Svelte Icon Library - Search, discover and download Iconify icons as Svelte components with TypeScript support",
   "keywords": [
-    "svelte", "svelte5",
-    "svelte icon", "icons", "svg",
-    "iconify", "font awesome", "fluent"
+    "svelte",
+    "svelte5",
+    "svelte icon",
+    "icons",
+    "svg",
+    "iconify",
+    "search",
+    "batch download",
+    "typescript",
+    "cli",
+    "parallel",
+    "font awesome",
+    "fluent",
+    "lucide",
+    "material design"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/friendofsvelte/svelicon"
+    "url": "git+https://github.com/friendofsvelte/svelicon.git"
   },
   "main": "index.js",
   "type": "module",
   "bin": {
-    "svelicon": "./cli.js"
+    "svelicon": "cli.js"
   },
   "dependencies": {
     "@iconify/utils": "^2.1.5",
     "axios": "^1.6.2",
     "commander": "^11.1.0",
-    "mkdirp": "^3.0.1"
+    "mkdirp": "^3.0.1",
+    "p-limit": "^6.2.0"
   }
 }
