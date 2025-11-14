@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm run test:run
+      
+    - name: Test CLI functionality
+      run: |
+        echo "Testing CLI basic functionality..."
+        node cli.js --help
+        
+  security:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run security audit
+      run: npm audit --audit-level=moderate
+      
+    - name: Test path traversal protection
+      run: |
+        echo "Testing security features..."
+        # Test that malicious paths are rejected
+        if node -e "
+          const { downloadIcon } = require('./index.js');
+          downloadIcon('test/icon', { outputDir: '../../../tmp', skipTsConfigCheck: true })
+            .then(() => process.exit(1))
+            .catch(() => process.exit(0));
+        "; then
+          echo "✅ Path traversal protection working"
+        else
+          echo "❌ Path traversal protection failed"
+          exit 1
+        fi
