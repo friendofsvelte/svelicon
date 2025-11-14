@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {program} from 'commander';
-import {downloadIcon, downloadIcons, searchIcons} from './index.js';
+import {downloadIcon, downloadIcons, searchIcons, downloadCollection} from './index.js';
 import readline from 'readline';
 
 // Helper function for interactive selection
@@ -107,6 +107,53 @@ program
                     console.log('\nhttps://github.com/friendofsvelte/svelicon ✨');
                     console.log(`🚀 Successfully created ${results.length} files`);
                 }
+            }
+        } catch (error) {
+            console.error('Error:', error.message);
+            process.exit(1);
+        }
+    });
+
+// Pattern download command
+program
+    .command('pattern-download')
+    .description('Download icons matching a pattern from a specific collection')
+    .argument('<pattern>', 'pattern to match (e.g., "eye*", "*home", "*arrow*", "*", or regex)')
+    .requiredOption('-c, --collection <name>', 'icon collection (e.g., fluent, mdi, lucide)')
+    .option('-o, --output <dir>', 'output directory', 'src/icons')
+    .option('--withts', 'generate TypeScript version', true)
+    .option('--withjs', 'generate JavaScript version', false)
+    .option('--concurrent <number>', 'concurrent downloads', '10')
+    .option('-l, --limit <number>', 'maximum icons to search', '100')
+    .option('--skip-tsconfig', 'skip tsconfig.json validation')
+    .action(async (pattern, options) => {
+        try {
+            console.log(`🎯 Pattern Download: "${pattern}" from "${options.collection}"`);
+            console.log('📋 Pattern Examples:');
+            console.log('  • "eye*"     - Icons starting with "eye"');
+            console.log('  • "*home"    - Icons ending with "home"');
+            console.log('  • "*arrow*"  - Icons containing "arrow"');
+            console.log('  • "*"        - All icons in collection');
+            console.log('  • "^user.*"  - Regex: icons starting with "user"');
+            console.log('');
+
+            const results = await downloadCollection(pattern, {
+                collection: options.collection,
+                outputDir: options.output,
+                withTs: options.withts,
+                withJs: options.withjs,
+                concurrency: parseInt(options.concurrent),
+                limit: parseInt(options.limit),
+                skipTsConfigCheck: options.skipTsconfig
+            });
+
+            if (results.length > 0) {
+                console.log('\nhttps://github.com/friendofsvelte/svelicon ✨');
+                console.log(`🚀 Successfully created ${results.length} files`);
+                console.log(`📁 Location: ${options.output}/`);
+            } else {
+                console.log('\n💡 Try different patterns or check collection name');
+                console.log('   Popular collections: fluent, mdi, lucide, heroicons, tabler');
             }
         } catch (error) {
             console.error('Error:', error.message);

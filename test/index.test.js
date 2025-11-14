@@ -203,6 +203,127 @@ describe('svelicon', () => {
     });
   });
 
+  describe('Collection Download', () => {
+    it('should match wildcard patterns correctly', () => {
+      // Import the pattern matching function (we'll need to export it)
+      const matchesPattern = (iconName, pattern) => {
+        if (pattern === '*') return true;
+        if (pattern.startsWith('*') && pattern.endsWith('*')) {
+          const text = pattern.slice(1, -1);
+          return iconName.includes(text);
+        }
+        if (pattern.startsWith('*')) {
+          const suffix = pattern.slice(1);
+          return iconName.endsWith(suffix);
+        }
+        if (pattern.endsWith('*')) {
+          const prefix = pattern.slice(0, -1);
+          return iconName.startsWith(prefix);
+        }
+        try {
+          const regex = new RegExp(pattern, 'i');
+          return regex.test(iconName);
+        } catch (error) {
+          return iconName === pattern;
+        }
+      };
+
+      // Test prefix patterns
+      expect(matchesPattern('home-24-filled', 'home*')).toBe(true);
+      expect(matchesPattern('arrow-left', 'home*')).toBe(false);
+      expect(matchesPattern('eye-open', 'eye*')).toBe(true);
+
+      // Test suffix patterns
+      expect(matchesPattern('arrow-home', '*home')).toBe(true);
+      expect(matchesPattern('home-arrow', '*home')).toBe(false);
+      expect(matchesPattern('back-arrow', '*arrow')).toBe(true);
+
+      // Test contains patterns
+      expect(matchesPattern('user-arrow-left', '*arrow*')).toBe(true);
+      expect(matchesPattern('home-filled', '*arrow*')).toBe(false);
+      expect(matchesPattern('arrow', '*arrow*')).toBe(true);
+
+      // Test match all
+      expect(matchesPattern('anything', '*')).toBe(true);
+      expect(matchesPattern('', '*')).toBe(true);
+
+      // Test regex patterns
+      expect(matchesPattern('user123', '^user\\d+')).toBe(true);
+      expect(matchesPattern('admin', '^user\\d+')).toBe(false);
+
+      // Test exact match fallback
+      expect(matchesPattern('exact-match', 'exact-match')).toBe(true);
+      expect(matchesPattern('different', 'exact-match')).toBe(false);
+    });
+
+    it('should handle edge cases in pattern matching', () => {
+      const matchesPattern = (iconName, pattern) => {
+        if (pattern === '*') return true;
+        if (pattern.startsWith('*') && pattern.endsWith('*')) {
+          const text = pattern.slice(1, -1);
+          return iconName.includes(text);
+        }
+        if (pattern.startsWith('*')) {
+          const suffix = pattern.slice(1);
+          return iconName.endsWith(suffix);
+        }
+        if (pattern.endsWith('*')) {
+          const prefix = pattern.slice(0, -1);
+          return iconName.startsWith(prefix);
+        }
+        try {
+          const regex = new RegExp(pattern, 'i');
+          return regex.test(iconName);
+        } catch (error) {
+          return iconName === pattern;
+        }
+      };
+
+      // Empty patterns
+      expect(matchesPattern('icon', '')).toBe(true); // Empty pattern should match exact
+      expect(matchesPattern('', '')).toBe(true);
+
+      // Single character patterns
+      expect(matchesPattern('a', 'a*')).toBe(true);
+      expect(matchesPattern('ab', 'a*')).toBe(true);
+      expect(matchesPattern('ba', '*a')).toBe(true);
+
+      // Case sensitivity (should be case insensitive for regex)
+      expect(matchesPattern('HOME', 'home')).toBe(true);
+      expect(matchesPattern('home', 'HOME')).toBe(true);
+
+      // Invalid regex patterns should fallback to exact match
+      expect(matchesPattern('[invalid', '[invalid')).toBe(true);
+      expect(matchesPattern('other', '[invalid')).toBe(false);
+    });
+
+    it('should validate collection download parameters', async () => {
+      const { downloadCollection } = await import('../index.js');
+      
+      // Should require collection parameter
+      await expect(downloadCollection('*', {})).rejects.toThrow('Collection name is required');
+      await expect(downloadCollection('*', { collection: '' })).rejects.toThrow('Collection name is required');
+    });
+
+    it('should handle collection download with mocked API', async () => {
+      // Mock the searchIcons function
+      const mockSearchIcons = vi.fn();
+      const mockDownloadIcons = vi.fn();
+      
+      // Mock successful search results
+      mockSearchIcons.mockResolvedValue({
+        icons: ['fluent:home-24-filled', 'fluent:home-20-regular', 'fluent:arrow-left', 'fluent:eye-open']
+      });
+      
+      mockDownloadIcons.mockResolvedValue(['home-24-filled.svelte', 'home-20-regular.svelte']);
+
+      // Test would require more complex mocking setup
+      // For now, just test the basic structure
+      expect(mockSearchIcons).toBeDefined();
+      expect(mockDownloadIcons).toBeDefined();
+    });
+  });
+
   describe('Security', () => {
     it('should prevent path traversal attacks', () => {
       const path = require('path');

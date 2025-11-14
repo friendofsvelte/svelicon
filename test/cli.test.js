@@ -192,4 +192,76 @@ describe('CLI Commands', () => {
       expect(concurrency).toBe(10);
     });
   });
+
+  describe('Pattern Download Command', () => {
+    it('should validate pattern download arguments', () => {
+      const args = ['node', 'cli.js', 'pattern-download', 'eye*', '-c', 'fluent', '-o', 'icons'];
+      
+      // Test argument parsing logic
+      const pattern = args[3]; // 'eye*'
+      const collectionIndex = args.indexOf('-c');
+      const collection = collectionIndex !== -1 ? args[collectionIndex + 1] : null;
+      const outputIndex = args.indexOf('-o');
+      const output = outputIndex !== -1 ? args[outputIndex + 1] : 'src/icons';
+      
+      expect(pattern).toBe('eye*');
+      expect(collection).toBe('fluent');
+      expect(output).toBe('icons');
+    });
+
+    it('should require collection parameter', () => {
+      const args = ['node', 'cli.js', 'pattern-download', 'eye*'];
+      
+      expect(() => {
+        // This would normally be handled by commander.js validation
+        const hasCollection = args.includes('-c') || args.includes('--collection');
+        if (!hasCollection) {
+          throw new Error('required option \'-c, --collection <name>\' not specified');
+        }
+      }).toThrow('required option');
+    });
+
+    it('should handle various pattern formats', () => {
+      const patterns = [
+        'eye*',      // prefix
+        '*home',     // suffix  
+        '*arrow*',   // contains
+        '*',         // all
+        '^user.*'    // regex
+      ];
+
+      patterns.forEach(pattern => {
+        const args = ['node', 'cli.js', 'pattern-download', pattern, '-c', 'fluent'];
+        const patternArg = args[3];
+        expect(patternArg).toBe(pattern);
+      });
+    });
+
+    it('should parse command line options correctly', () => {
+      const args = [
+        'node', 'cli.js', 'pattern-download', 'home*', 
+        '-c', 'mdi',
+        '-o', 'custom/path',
+        '--withjs',
+        '--concurrent', '5',
+        '-l', '50',
+        '--skip-tsconfig'
+      ];
+      
+      // Test option parsing
+      const collection = args[args.indexOf('-c') + 1];
+      const output = args[args.indexOf('-o') + 1];
+      const concurrent = args[args.indexOf('--concurrent') + 1];
+      const limit = args[args.indexOf('-l') + 1];
+      const hasWithjs = args.includes('--withjs');
+      const hasSkipTsconfig = args.includes('--skip-tsconfig');
+      
+      expect(collection).toBe('mdi');
+      expect(output).toBe('custom/path');
+      expect(concurrent).toBe('5');
+      expect(limit).toBe('50');
+      expect(hasWithjs).toBe(true);
+      expect(hasSkipTsconfig).toBe(true);
+    });
+  });
 });

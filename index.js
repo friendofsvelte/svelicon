@@ -133,6 +133,112 @@ async function processIconData(svgContent) {
     return iconData;
 }
 
+// Pattern matching for collection downloads
+function matchesPattern(iconName, pattern) {
+    // Convert wildcard pattern to regex
+    if (pattern === '*') {
+        return true; // Match all
+    }
+    
+    if (pattern.startsWith('*') && pattern.endsWith('*')) {
+        // *text* - contains
+        const text = pattern.slice(1, -1);
+        return iconName.includes(text);
+    }
+    
+    if (pattern.startsWith('*')) {
+        // *suffix - ends with
+        const suffix = pattern.slice(1);
+        return iconName.endsWith(suffix);
+    }
+    
+    if (pattern.endsWith('*')) {
+        // prefix* - starts with
+        const prefix = pattern.slice(0, -1);
+        return iconName.startsWith(prefix);
+    }
+    
+    // Try as regex pattern
+    try {
+        const regex = new RegExp(pattern, 'i');
+        return regex.test(iconName);
+    } catch (error) {
+        // If regex fails, do exact match
+        return iconName === pattern;
+    }
+}
+
+// Download icons matching a pattern from a collection
+export async function downloadCollection(pattern, options = {}) {
+    const {
+        collection = '',
+        outputDir = 'src/icons',
+        withTs = false,
+        withJs = true,
+        concurrency = 10,
+        limit = 100,
+        skipTsConfigCheck = false
+    } = options;
+
+    if (!collection) {
+        throw new Error('Collection name is required for pattern downloads');
+    }
+
+    console.log(`🔍 Searching for icons matching "${pattern}" in collection "${collection}"...`);
+
+    try {
+        // Search for icons in the specified collection
+        const searchResults = await searchIcons('', {
+            collection,
+            limit: Math.max(limit, 500) // Get more results for pattern matching
+        });
+
+        if (searchResults.icons.length === 0) {
+            console.log(`❌ No icons found in collection "${collection}"`);
+            return [];
+        }
+
+        // Filter icons by pattern
+        const matchingIcons = searchResults.icons.filter(iconFullName => {
+            // Extract just the icon name (after collection prefix)
+            const iconName = iconFullName.includes(':') 
+                ? iconFullName.split(':')[1] 
+                : iconFullName.split('/')[1];
+            
+            return iconName && matchesPattern(iconName, pattern);
+        });
+
+        if (matchingIcons.length === 0) {
+            console.log(`❌ No icons matching pattern "${pattern}" found in collection "${collection}"`);
+            console.log(`💡 Available icons: ${searchResults.icons.slice(0, 5).join(', ')}${searchResults.icons.length > 5 ? '...' : ''}`);
+            return [];
+        }
+
+        console.log(`✅ Found ${matchingIcons.length} icons matching pattern "${pattern}"`);
+        console.log(`📦 Icons to download: ${matchingIcons.slice(0, 5).join(', ')}${matchingIcons.length > 5 ? ` and ${matchingIcons.length - 5} more...` : ''}`);
+
+        // Convert to proper format and download
+        const iconsToDownload = matchingIcons.map(icon => {
+            // Convert colon format to slash format if needed
+            return icon.includes(':') && !icon.includes('/') 
+                ? icon.replace(':', '/') 
+                : icon;
+        });
+
+        return await downloadIcons(iconsToDownload, {
+            outputDir,
+            withTs,
+            withJs,
+            concurrency,
+            skipTsConfigCheck
+        });
+
+    } catch (error) {
+        console.error(`Failed to download collection: ${error.message}`);
+        return [];
+    }
+}
+
 // Search icons using Iconify API
 export async function searchIcons(query, options = {}) {
     const {
