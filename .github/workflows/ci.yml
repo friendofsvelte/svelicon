@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+permissions:
+  contents: write  # Allow creating tags and releases
+  packages: write  # Allow publishing packages
+
 jobs:
   test:
     runs-on: ubuntu-latest
