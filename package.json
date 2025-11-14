@@ -29,7 +29,7 @@
     "svelicon": "cli.js"
   },
   "dependencies": {
-    "@iconify/utils": "^2.1.5",
+    "@iconify/utils": "^3.0.2",
     "axios": "^1.6.2",
     "commander": "^11.1.0",
     "mkdirp": "^3.0.1",
