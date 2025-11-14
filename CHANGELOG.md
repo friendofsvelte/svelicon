@@ -9,13 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Pre-push git hooks to run tests before pushing
-- GitHub Actions CI/CD pipeline
+- GitHub Actions CI/CD pipeline with automatic publishing
+- Automated NPM publishing on version changes to main branch
 - Comprehensive security tests
 - Path traversal protection
+- Version management scripts (`npm run release`, `npm run release:minor`, etc.)
+- GitHub release automation with changelog
+- Dependabot for automated dependency updates
 
 ### Security
 - Fixed path traversal vulnerability in output directory handling
 - Added input sanitization for output paths
+- NPM security audit in CI pipeline
+
+### Changed
+- Enhanced CI/CD pipeline with multi-stage testing and publishing
+- Improved release process with automatic tagging and GitHub releases
 
 ## [2.0.0-beta.1] - 2024-11-14
 
