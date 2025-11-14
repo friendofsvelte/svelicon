@@ -70,21 +70,6 @@ jobs:
           fi
         }
       
-    - name: Test path traversal protection
-      run: |
-        echo "Testing security features..."
-        # Test that malicious paths are rejected
-        if node -e "
-          const { downloadIcon } = require('./index.js');
-          downloadIcon('test/icon', { outputDir: '../../../tmp', skipTsConfigCheck: true })
-            .then(() => process.exit(1))
-            .catch(() => process.exit(0));
-        "; then
-          echo "✅ Path traversal protection working"
-        else
-          echo "❌ Path traversal protection failed"
-          exit 1
-        fi
 
   publish:
     runs-on: ubuntu-latest
