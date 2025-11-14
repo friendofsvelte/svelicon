@@ -5,6 +5,19 @@ import {mkdirp} from 'mkdirp';
 import {parseSVGContent, convertParsedSVG, iconToSVG} from '@iconify/utils';
 import pLimit from 'p-limit';
 
+// Security: Prevent path traversal attacks
+function sanitizeOutputDir(outputDir) {
+    const resolved = path.resolve(outputDir);
+    const cwd = process.cwd();
+    
+    // Ensure output directory is within current working directory
+    if (!resolved.startsWith(cwd)) {
+        throw new Error(`Output directory must be within current working directory. Got: ${outputDir}`);
+    }
+    
+    return resolved;
+}
+
 const capitalizeFirstLetter = (string) => {
     // Split the string by ':' and '-' to handle both separator types
     return string
@@ -15,6 +28,8 @@ const capitalizeFirstLetter = (string) => {
 
 // Validate tsconfig.json for $icons path mapping
 async function validateTsConfig(outputDir) {
+    // Sanitize the output directory for security
+    const safeOutputDir = sanitizeOutputDir(outputDir);
     const possibleTsConfigPaths = [
         'tsconfig.json',
         '.svelte-kit/tsconfig.json',
@@ -40,7 +55,7 @@ async function validateTsConfig(outputDir) {
                         const normalizedOutputDir = outputDir.replace(/^\.\//, '');
                         
                         if (normalizedMappingPath !== normalizedOutputDir) {
-                            console.log(`⚠️  Warning: $icons mapping points to "${iconsMappingPath}" but downloading to "${outputDir}"`);
+                            console.log(`⚠️  Warning: $icons mapping points to "${iconsMappingPath}" but downloading to "${safeOutputDir}"`);
                             console.log(`   Consider using --output "${normalizedMappingPath}" or updating your tsconfig.json`);
                         }
                     }
@@ -59,8 +74,8 @@ async function validateTsConfig(outputDir) {
     console.log('   {');
     console.log('     "compilerOptions": {');
     console.log('       "paths": {');
-    console.log(`         "$icons": ["${outputDir}"],`);
-    console.log(`         "$icons/*": ["${outputDir}/*"]`);
+    console.log(`         "$icons": ["${safeOutputDir}"],`);
+    console.log(`         "$icons/*": ["${safeOutputDir}/*"]`);
     console.log('       }');
     console.log('     }');
     console.log('   }');
@@ -279,8 +294,9 @@ export async function downloadIcon(icon, options = {}) {
             height: 'auto', width: 'auto'
         });
 
-        // Prepare output
-        await mkdirp(outputDir);
+        // Prepare output with security validation
+        const safeOutputDir = sanitizeOutputDir(outputDir);
+        await mkdirp(safeOutputDir);
         const names = icon.split('/');
         const collectionName = names[0];
         const iconName = names[1];
@@ -292,8 +308,8 @@ export async function downloadIcon(icon, options = {}) {
         // Generate component content based on type
         const content = generateComponent(renderData.body, iconData.height, iconData.width, componentName, withTs);
 
-        // Write file
-        const outputPath = path.join(outputDir, `${componentName}.svelte`);
+        // Write file to sanitized path
+        const outputPath = path.join(safeOutputDir, `${componentName}.svelte`);
         await fs.writeFile(outputPath, content, 'utf8');
 
         return [outputPath];

@@ -65,7 +65,17 @@ program
     .option('--skip-tsconfig', 'skip tsconfig.json validation')
     .action(async (icons, options) => {
         try {
-            const iconList = icons.split(',').map(icon => icon.trim()).filter(Boolean);
+            // Parse icon list and convert colon format to slash format
+            const iconList = icons.split(',')
+                .map(icon => icon.trim())
+                .filter(Boolean)
+                .map(icon => {
+                    // Convert "collection:icon-name" to "collection/icon-name"
+                    if (icon.includes(':') && !icon.includes('/')) {
+                        return icon.replace(':', '/');
+                    }
+                    return icon;
+                });
             const concurrency = parseInt(options.concurrent);
             
             if (iconList.length === 1) {
@@ -180,7 +190,12 @@ program
             console.log('⚠️  Legacy format detected. Consider using: svelicon download <icon>');
             
             try {
-                const results = await downloadIcon(icon, {
+                // Convert colon format to slash format for legacy support
+                const processedIcon = icon && icon.includes(':') && !icon.includes('/') 
+                    ? icon.replace(':', '/') 
+                    : icon;
+                    
+                const results = await downloadIcon(processedIcon, {
                     outputDir: options.output,
                     withTs: options.withts,
                     withJs: options.withjs

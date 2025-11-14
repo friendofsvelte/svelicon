@@ -34,5 +34,18 @@
     "commander": "^11.1.0",
     "mkdirp": "^3.0.1",
     "p-limit": "^6.2.0"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0",
+    "jsdom": "^23.0.0",
+    "@vitest/ui": "^1.0.0",
+    "husky": "^8.0.3"
+  },
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "prepare": "husky install",
+    "pre-push": "npm run test:run"
   }
 }
