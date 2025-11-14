@@ -1,30 +1,16 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
 
 ### Added
-- Pre-push git hooks to run tests before pushing
-- GitHub Actions CI/CD pipeline with automatic publishing
-- Automated NPM publishing on version changes to main branch
-- Comprehensive security tests
-- Path traversal protection
-- Version management scripts (`npm run release`, `npm run release:minor`, etc.)
-- GitHub release automation with changelog
-- Dependabot for automated dependency updates
+- Automated CI/CD pipeline with NPM publishing
+- Path traversal security protection
+- Pre-push git hooks for testing
+- Version management scripts
 
 ### Security
-- Fixed path traversal vulnerability in output directory handling
-- Added input sanitization for output paths
-- NPM security audit in CI pipeline
-
-### Changed
-- Enhanced CI/CD pipeline with multi-stage testing and publishing
-- Improved release process with automatic tagging and GitHub releases
+- Fixed path traversal vulnerability
+- Added security audit in CI pipeline
 
 ## [2.0.0-beta.1] - 2024-11-14
 
