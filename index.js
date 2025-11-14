@@ -187,11 +187,28 @@ export async function downloadCollection(pattern, options = {}) {
     console.log(`🔍 Searching for icons matching "${pattern}" in collection "${collection}"...`);
 
     try {
-        // Search for icons in the specified collection
-        const searchResults = await searchIcons('', {
-            collection,
-            limit: Math.max(limit, 500) // Get more results for pattern matching
-        });
+        // Get all icons from the collection using the collection API
+        let searchResults;
+        try {
+            // Try to get collection info first
+            const collectionResponse = await axios.get(`https://api.iconify.design/collection?prefix=${collection}`);
+            if (collectionResponse.data && collectionResponse.data.uncategorized) {
+                // Get icons from collection info
+                const icons = collectionResponse.data.uncategorized.map(icon => `${collection}:${icon}`);
+                searchResults = {
+                    icons: icons.slice(0, Math.max(limit, 500)),
+                    total: icons.length
+                };
+            } else {
+                throw new Error('Collection not found');
+            }
+        } catch (collectionError) {
+            // Fallback to search with a generic query
+            searchResults = await searchIcons('icon', {
+                collection,
+                limit: Math.max(limit, 500)
+            });
+        }
 
         if (searchResults.icons.length === 0) {
             console.log(`❌ No icons found in collection "${collection}"`);

@@ -1,6 +1,6 @@
 {
   "name": "svelicon",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "✨ Svelte Icon Library - Search, discover and download Iconify icons as Svelte components with TypeScript support",
   "keywords": [
     "svelte",
